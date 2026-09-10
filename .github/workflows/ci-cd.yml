@@ -26,13 +26,6 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
-      - name: Push Prisma Schema to Supabase
-        working-directory: ./backend
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DIRECT_URL: ${{ secrets.DIRECT_URL }}
-        run: npx prisma db push --accept-data-loss
-
   build-and-publish-docker:
     needs: build-and-push-database
     runs-on: ubuntu-latest
