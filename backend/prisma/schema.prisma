@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String          @id @default(uuid())
+  name         String
+  email        String          @unique
+  passwordHash String
+  role         Role            @default(SALES)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  challans     Challan[]       @relation("ChallanCreator")
+  movements    StockMovement[] @relation("MovementCreator")
+}
+
+enum Role {
+  ADMIN
+  SALES
+  WAREHOUSE
+  ACCOUNTS
+}
+
+model Customer {
+  id           String    @id @default(uuid())
+  name         String
+  mobile       String    @unique
+  email        String?
+  businessName String?
+  gstNumber    String?
+  customerType CustType  @default(Retail)
+  address      String?
+  status       Status    @default(Lead)
+  followUpDate DateTime?
+  notes        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  challans     Challan[]
+}
+
+enum CustType {
+  Retail
+  Wholesale
+  Distributor
+}
+
+enum Status {
+  Lead
+  Active
+  Inactive
+}
+
+model Product {
+  id           String          @id @default(uuid())
+  name         String
+  sku          String          @unique
+  category     String?
+  unitPrice    Float
+  currentStock Int             @default(0)
+  minimumStock Int             @default(0)
+  location     String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  movements    StockMovement[]
+  challanItems ChallanItem[]
+}
+
+model StockMovement {
+  id        String       @id @default(uuid())
+  product   Product      @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+  type      MovementType
+  reason    String?
+  createdBy String
+  user      User         @relation("MovementCreator", fields: [createdBy], references: [id])
+  createdAt DateTime     @default(now())
+}
+
+enum MovementType {
+  IN
+  OUT
+}
+
+model Challan {
+  id            String        @id @default(uuid())
+  challanNumber String        @unique
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  customerId    String
+  totalQuantity Int           @default(0)
+  status        ChallanStatus @default(Draft)
+  createdBy     String
+  user          User          @relation("ChallanCreator", fields: [createdBy], references: [id])
+  items         ChallanItem[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+enum ChallanStatus {
+  Draft
+  Confirmed
+  Cancelled
+}
+
+model ChallanItem {
+  id                  String  @id @default(uuid())
+  challan             Challan @relation(fields: [challanId], references: [id], onDelete: Cascade)
+  challanId           String
+  product             Product @relation(fields: [productId], references: [id])
+  productId           String
+  productNameSnapshot String
+  skuSnapshot         String
+  unitPriceSnapshot   Float
+  quantity            Int
+}
