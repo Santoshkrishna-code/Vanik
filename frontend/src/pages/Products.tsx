@@ -146,7 +146,9 @@ export default function Products() {
                             {product.currentStock} in stock
                           </span>
                           {isLowStock && (
-                            <AlertTriangle className="ml-2 h-4 w-4 text-red-500" title={`Below minimum of ${product.minimumStock}`} />
+                            <div title={`Below minimum of ${product.minimumStock}`}>
+                              <AlertTriangle className="ml-2 h-4 w-4 text-red-500" />
+                            </div>
                           )}
                         </div>
                       </td>
