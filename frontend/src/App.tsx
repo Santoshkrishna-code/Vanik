@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './components/layouts/DashboardLayout';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Customers from './pages/Customers';
 import Products from './pages/Products';
@@ -21,6 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         
         <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />
