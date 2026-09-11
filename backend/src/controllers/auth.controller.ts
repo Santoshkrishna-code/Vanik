@@ -100,6 +100,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(201).json({ success: true, user });
   } catch (error) {
     console.error('Register error:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ 
+      success: false, 
+      message: error instanceof Error ? error.message : 'Internal server error' 
+    });
   }
 };
