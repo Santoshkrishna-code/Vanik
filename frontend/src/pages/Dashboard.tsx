@@ -5,7 +5,6 @@ import {
   TrendingUp, 
   AlertTriangle,
   ArrowUpRight,
-  ArrowDownRight,
   IndianRupee
 } from 'lucide-react';
 import { 
@@ -15,10 +14,7 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  Legend
+  ResponsiveContainer
 } from 'recharts';
 import api from '../services/api';
 

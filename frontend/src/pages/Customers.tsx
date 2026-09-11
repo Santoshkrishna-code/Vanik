@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, MoreVertical, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import api from '../services/api';
 
 export default function Customers() {
